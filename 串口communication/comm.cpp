@@ -53,15 +53,13 @@ void Comm::ReceiveChar()
 			{
 				switch (dwError = GetLastError())
 				{
-				case ERROR_IO_PENDING:
-				{
-					bRead = FALSE;
-					break;
-				}
-				default:
-				{
-					break;
-				}
+					case ERROR_IO_PENDING:
+					{
+						bRead = FALSE;
+						break;
+					}
+					default:
+						break;
 				}
 			}
 			else
@@ -154,10 +152,10 @@ bool Comm::WriteChar(BYTE* m_szWriteBuffer, DWORD m_nToSend)
 }
 
 
-Comm::Comm(LPCWSTR Port,bool *state)
+Comm::Comm(bool *state)
 {
 	this->state = state;
-	open = OpenPort(Port);
+	open = OpenPort();
 	if (open)
 	{
 		std::cout << "open comport success" << std::endl;
@@ -210,9 +208,9 @@ bool Comm::ProcessErrorMessage(char* ErrorText)
 
 
 
-bool Comm::OpenPort(LPCWSTR portname)
+bool Comm::OpenPort(LPCWSTR port)
 {
-	hComm = CreateFile(portname,  //串口号
+	hComm = CreateFile(port,  //串口号
 		GENERIC_READ | GENERIC_WRITE,   //允许读和写
 		0,								//通讯设备必须以独占的方式打开
 		0,								//无安全保护机制
