@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-04-14 19:13:24
+Date: 2015-04-15 12:32:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -70,6 +70,7 @@ CREATE TABLE `point` (
   `state` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'stateΪfalseʱΪ��ռ�û�δ����,ΪtrueʱΪδ��ռ�û��Ѽ���',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'typeΪtrueʱΪ�û��ڵ�,ΪfalseʱΪ��λ�ڵ�',
   `todo` int(1) NOT NULL DEFAULT '1',
+  `Mac` char(17) NOT NULL,
   PRIMARY KEY (`POINT_id`),
   KEY `PARK_id` (`PARK_id`),
   CONSTRAINT `FK_POINT_PARK` FOREIGN KEY (`PARK_id`) REFERENCES `park` (`PARK_id`)
@@ -90,6 +91,6 @@ CREATE TABLE `user` (
   KEY `PARK_id` (`PARK_id`),
   KEY `USERPOINT_id` (`USERPOINT_id`),
   KEY `carPOINT_id` (`carPOINT_id`),
-  CONSTRAINT `FK_USER_POINT` FOREIGN KEY (`USERPOINT_id`) REFERENCES `point` (`POINT_id`),
-  CONSTRAINT `FK_USER_PARK` FOREIGN KEY (`PARK_id`) REFERENCES `park` (`PARK_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_USER_PARK` FOREIGN KEY (`PARK_id`) REFERENCES `park` (`PARK_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_POINT` FOREIGN KEY (`USERPOINT_id`) REFERENCES `point` (`POINT_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

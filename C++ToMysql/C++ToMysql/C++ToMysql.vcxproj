@@ -78,9 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="mysql.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Node.h" />
     <ClCompile Include="源.cpp" />

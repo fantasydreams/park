@@ -8,8 +8,8 @@ Node::Node()
 		std::cout << "yes"<<std::endl;
 	else
 		std::cout << "no"<<std::endl;
-	if (quary('0',-1))
-		print();
+	quary('1', "ff-ff-ff-ff-ff-ff");
+		//print();
 }
 
 Node::~Node()
@@ -33,12 +33,12 @@ void Node::GetNodeToDo()
 {
 	while (true)
 	{
-		quary(9, -1);
+		quary(9, NULL);
 		if (res)
 			Active();  //激活操作
 		else
 			Sleep(100);  //线程暂时性休眠
-		quary(0, -1);
+		quary(0, NULL);
 		if (res)
 			Dormant();  //休眠操作
 		else
@@ -46,13 +46,13 @@ void Node::GetNodeToDo()
 	}
 }
 
-bool Node::quary(char var,long int id = -1)
+bool Node::quary(char var,char * Mac)
 {
 	mysql_query(mysql, "set names utf8");
 	if ('0' == var)  //得到需要休眠节点的id
 	{
 		//select POINT_id from point where todo = 0
-		mysql_query(mysql, "select POINT_id from point where todo = 0");
+		mysql_query(mysql, "select Mac from point where todo = 0");
 		if (!(res = mysql_use_result(mysql)))
 		{
 			std::cout << "some little problem！" << mysql_error(mysql);
@@ -62,7 +62,7 @@ bool Node::quary(char var,long int id = -1)
 	}
 	if (var == '9')//得到需要激活节点的id
 	{
-		mysql_query(mysql, "select POINT_id from point where todo = 9");
+		mysql_query(mysql, "select Mac from point where todo = 9");
 		if (!(res = mysql_use_result(mysql)))
 		{
 			std::cout << "some little problem！" << mysql_error(mysql);
@@ -70,16 +70,11 @@ bool Node::quary(char var,long int id = -1)
 		}
 		return true;
 	}
-	if (var == '1' && id > 0) //将节点的状态置为不做任何操作
+	if (var == '1' && Mac!=NULL) //将节点的状态置为不做任何操作
 	{
-		char qury[200];
-		_itoa_s(id, qury, 10);
-		std::string s = std::string(qury);
-		std::string qurysql = "update point set todo = 1 where POINT_id = " + s;
-		if (mysql_query(mysql, qurysql.c_str()))
-			return true;
-		else
-			return false;
+		std::string s = std::string(Mac);
+		std::string qurysql = "update point set todo = 1 where Mac = '" + s + "'";
+		mysql_query(mysql, qurysql.c_str());
 	}
 	return false;  //防止意外情况发生
 }
@@ -116,17 +111,24 @@ void Node::CoordinateQuery(int N_id, int posX, int posY, int posZ)
 	std::string PositionZ(str);
 	_itoa_s(N_id, str, 10);
 	std::string Node_id(str);  
-	std::string query = "update point set posX = " + PositionX + " and posY = " + PositionY + " and posZ = " + PositionZ + " where POINT_id = " + Node_id;
+	std::string query = "update point set posX = " + PositionX + " and posY = " + PositionY + " and posZ = " + PositionZ + " where Mac = " + Node_id;
 	mysql_query(mysql, "set names utf8");
 	mysql_query(mysql, query.c_str());  //更新位置信息命令
 }
 
 void Node::Active()
 {
-
+	
+	while (record = mysql_fetch_row(res)) // 通过Mac地址激活需要激活的终端节点
+	{
+		
+	}
 }
 
 void Node::Dormant()
 {
+	while (record = mysql_fetch_row(res))// 通过Mac地址休眠需要休眠的终端节点
+	{
 
+	}
 }

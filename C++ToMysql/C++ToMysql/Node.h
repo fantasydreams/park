@@ -39,7 +39,7 @@ private:
 	void GetNodeToDo();  //给节点下激活或者激活的指令
 	void Active();  //激活节点
 	void Dormant();  //休眠节点
-	bool quary(char, long int); //查询
+	bool quary(char, char *); //查询
 	void print();  //测试函数
 	void CoordinateWriteToSql(); //将终端节点坐标写入数据库
 	void CoordinateQuery(int, int, int, int);
